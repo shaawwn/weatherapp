@@ -1,0 +1,24 @@
+:root {
+    --input-width: 100px;
+}
+
+.dropdown {
+    /* background-color: red; */
+    width: var(--input-width);
+    /* display: none; */
+    background-color: rgb(238, 238, 238);
+    border: 1px solid black
+}
+
+.dropdown-item {
+    /* color: green; */
+    border-bottom: 1px solid black;
+}
+
+.dropdown-item:hover {
+    background-color: rgb(205, 239, 243);
+}
+
+.search-input {
+    width: 100px;
+}
