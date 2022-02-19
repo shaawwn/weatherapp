@@ -1,17 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 
+// Test for .env loading
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+const OPENWEATHER_API = process.env.REACT_APP_OPENWEATHER_API
+// console.log("Loading weather app....", BASE_URL, OPENWEATHER_API)
+
+function checkKeyUp() {
+  const locationInput = document.getElementsByName('search-weather-input')[0]
+  console.log(locationInput, "location inpute")
+  locationInput.addEventListener('keyup', () => {
+    console.log("Keyup")
+  })
+}
+// 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App weatherapi={OPENWEATHER_API}/>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
+
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
