@@ -1,13 +1,15 @@
 //Given a city name when searching for weather, parse out all city name matches
 // and give the user option to choose which city they mean (for ambiguos names)
 
-function getCityName(getCityName) {
+function getCityName(cityID) {
+    console.log(cityID)
     const city_names = require('./city.list.json')
     let result = city_names.filter(obj => {
-        return obj.name=== 'London'
+        // console.log("Object", obj.id) // 4975802 Portland ME id
+        return obj.id === cityID
     })
-    console.log(result)
-    // return city_names
+    console.log("REsult", result)
+    return result[0].state
 }
 
 function getCityObjects() {

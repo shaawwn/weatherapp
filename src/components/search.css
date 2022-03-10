@@ -1,13 +1,30 @@
 :root {
     --input-width: 100px;
+    --auto-margin: calc(100vw - 65vw);
+    --searchbar-location: 50%;
 }
 
+.searchbar-container {
+    display: flex;
+    justify-content: center;
+}
+.searchbar {
+    /* text-align: center; */
+    /* margin-left: var(--searchbar-location); */
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 .dropdown {
     /* background-color: red; */
+    position: fixed;
     width: var(--input-width);
     /* display: none; */
     background-color: rgb(238, 238, 238);
-    border: 1px solid black
+    border: 1px solid black;
+    /* margin-left: var(--searchbar-location); */
+    /* text-align: center; */
+    
 }
 
 .dropdown-item {

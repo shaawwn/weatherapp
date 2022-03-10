@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+
+        
+        <script>
+            const dt = 1646009001 // 2:43pm HST -> 4:43 PST or 14:43 -> 16:43
+
+            const sunrise = 1645973558 
+            const sunset = 1646013271
+            const timezone = -28800
+            console.log("loading page")
+            // dt = 1646009001
+
+            // sunrise: 1645973558
+            // sunset: 1646013271
+            // timezone: -28800
+            function convertUTC(utcValue, timezone) {
+                // timeFormat as 12 or 24 hour time, converts UTC value to one of those
+                // utc in seconds -> minutes -> hours -> days
+                let newDate = new Date(utcValue);
+                // console.log("LOCAL", formatAMPM(newDate))
+                newDate = newDate.toUTCString();
+                console.log(newDate)
+                return newDate.split(' ')[4].split(":").slice(0,2).join(":")
+
+            }
+
+
+            console.log(convertUTC(dt, timezone))
+            const localTime = convertUTC((dt + timezone) * 1000)
+            console.log(localTime)
+        </script>
+    </body>
+</html>
