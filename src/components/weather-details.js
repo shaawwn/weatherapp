@@ -2,7 +2,9 @@
 import React, { useState, useEffect} from 'react';
 import style from '../styles/weather-details.css';
 import {kToF, kToC, convertUTC, changeTimeFormat, capitolizeWeatherDesc} from '../data-parsing';
+import SevenDay from './sevenday/sevenday.js';
 function WeatherDetails(props) {
+    console.log("Loading weathe details", props)
     // main container for holding and displaying weather data
     // props are object of returned weather data from api call
     // console.log("Weatherdata", props)
@@ -35,7 +37,10 @@ function WeatherDetails(props) {
                 </div>
             </div>
             <div className="forecast-container">
-                <h1>Put 7 day forecast here!</h1>
+                {/* <h1>Put 7 day forecast here!</h1> */}
+                {props.sevendayforecast
+                ? <SevenDay forecast={props.sevendayforecast} />
+                : <span></span>}
             </div>
         </div>
     )

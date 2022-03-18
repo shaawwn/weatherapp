@@ -1,6 +1,7 @@
 // Functions for parsing weather data
 import {getCityName} from './parse_city_names';
 function parseCurrentWeather(data) {
+  console.log("Parsing data", data)
     // From the returned API data, parse into weather data
     // object to be used by APP
     // console.log("Importing from seperate file", data)
@@ -42,19 +43,26 @@ function convertUTC(utcValue, timezoneOffset) {
   let newDate = new Date(adjustedTimestamp);
   // console.log("LOCAL", formatAMPM(newDate))
   newDate = newDate.toUTCString();
-  // console.log("New date", newDate)
+  console.log("New date", newDate)
   return newDate.split(' ')[4].split(":").slice(0,2).join(":")
 }
 
 function changeTimeFormat(timeToConvert) {
   // console.log("Time to convert", timeToConvert.slice(0, 2))
   // convert a time string in 24 hour format into 12 hour format
+  let adjustedTime;
   if(timeToConvert.slice(0,2) >= 12) {
       // Subtract 12
-      let adjustedTime = timeToConvert.slice(0,2) - 12
+      if(timeToConvert.slice(0,2) == 12) {
+        adjustedTime = 12
+      } else {
+        adjustedTime = timeToConvert.slice(0,2) - 12
+      }
+      // let adjustedTime = timeToConvert.slice(0,2) - 12
       timeToConvert = timeToConvert.split("")
       timeToConvert.splice(0, 2, adjustedTime.toString())
       timeToConvert.push('pm');
+      // console.log("Time to convert after", timeToConvert)
       return timeToConvert.join("")
   } else {
       // remove leading 0
@@ -64,6 +72,7 @@ function changeTimeFormat(timeToConvert) {
         timeToConvert.splice(0, 1, '');
       } // maintain leading digit if not 0 (10, or 11 am)
       timeToConvert.push('am');
+      // console.log("Time to convert pre", timeToConvert)
       return timeToConvert.join("")
   }
 }   
@@ -80,7 +89,7 @@ function parseSevenDay(data) {
 function capitolizeWeatherDesc(weatherDesc) {
   // capitolize the weather description from open weather api call
 
-  console.log("Weather description:", weatherDesc, weatherDesc.split(" "))
+  // console.log("Weather description:", weatherDesc, weatherDesc.split(" "))
   let formattedDesc = []
   weatherDesc.split(" ").forEach(word => {
     let formattedWord = word.slice(0, 1).toUpperCase() + word.slice(1)
@@ -89,7 +98,15 @@ function capitolizeWeatherDesc(weatherDesc) {
   return formattedDesc.join(" ")
 }
 
+function getDay(dateObject) {
+  // return the day of week as a string from dateObject
+  let newDate = new Date(dateObject * 1000);
+  // console.log("LOCAL", formatAMPM(newDate))
+  newDate = newDate.toUTCString();
+  // console.log("From getDay", newDate.slice(0, 3))
+  return newDate.slice(0, 3)
+}
 function sum(a, b) {
     return a + b
 }
-export { parseCurrentWeather, parseSevenDay, kToF, kToC, convertUTC, changeTimeFormat, capitolizeWeatherDesc }
+export { getDay, parseCurrentWeather, parseSevenDay, kToF, kToC, convertUTC, changeTimeFormat, capitolizeWeatherDesc, sum }

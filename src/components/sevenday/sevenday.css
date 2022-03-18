@@ -1,0 +1,19 @@
+.forecast-container {
+    display: flex;
+}
+
+.single-day {
+    background: rgba(50,50,50,0.5);
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+.high-low {
+    display: flex;
+    justify-content: center;
+}
+
+.high-low > p {
+    margin: 5px;
+}

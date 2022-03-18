@@ -4,14 +4,16 @@ import Dropdown from '../dropdown'
 import Node from '../../matchnode';
 
 function SearchBar(props) {
-    const [userInput, setUserInput] = useState([])
-    const [cityMatches, setCityMatches] = useState(getCityObjects())
+    // props.cityMatches, props.setCityMatches instead
+    // console.log("PROPS", props)
+    const [userInput, setUserInput] = useState([]) // return to empty array for original
+    // const [cityMatches, setCityMatches] = useState(props.cityMatches) // Use matched city object to get name/lat/lon for api call
     const [loadDropdown, setLoadDropdown] = useState(false)
     const [matchHistory, setMatchHistory] = useState([])
 
+    // console.log("This is city matches top level", props.cityMatches)
     function cityMatch(toMatch, backspace=false) {
-        // Instead of array of City names only, search the array of city objects
-        // format = {id: 1, name: Portland, State: "OR", etc}
+        // given a string toMatch, return array of possible city objects 
         if(backspace === true) {
             if(toMatch.length > 1) {
                 // Go back an element for each letter removed with backspace
@@ -23,7 +25,7 @@ function SearchBar(props) {
                     console.log("Back at the begining")
                 } else {
                     // Can set cityMatches to empty array which is no bueno
-                    setCityMatches(matchHistory[matchHistory.length - 1])
+                    props.setCityMatches(matchHistory[matchHistory.length - 1])
                 }
                 setLoadDropdown(true)
             }
@@ -31,12 +33,14 @@ function SearchBar(props) {
             if(toMatch.length > 1) {
                 let matches = []
                 const re = new RegExp(formatCityName(toMatch.join("")))
-                cityMatches.forEach(city => {
+                props.cityMatches.forEach(city => {
+                    // console.log("City object", city)
                     if(city.name.match(re) != null) {
                         matches.push(city)
                     }
                 })
-                setCityMatches(matches);
+                props.setCityMatches(matches);
+                // console.log("City matches", matches)
                 // Use an array to store the history of searches
                 setMatchHistory(
                     matchHistory => [...matchHistory, matches]
@@ -47,9 +51,18 @@ function SearchBar(props) {
     }
 
     function handleKeyUp(event) {
+        // user enters keys in search input, set the userinput on key up, builds a string to use for cityMatch() function
+        const currentInput = document.querySelector('.search-input') // This will still think the highlighted text is the userinput
         if(event.nativeEvent.key === 'Backspace') {
             // if userInput > 0, remove a single letter, else do nothing
-            if(userInput.length > 0) {
+            if(currentInput.value === '') {
+                console.log("Field is empty")
+                setUserInput([])
+                setLoadDropdown(false)
+                props.setCityMatches(getCityObjects()) // resets city matches
+            
+            }
+            else if(userInput.length > 0) {
                 // Set new matched city array
                 let newUserInput = userInput.slice(0, userInput.length - 1)
                 // Expand the list again as user removes letters
@@ -61,8 +74,7 @@ function SearchBar(props) {
             }
             return false;
         }
-        if(event.nativeEvent.key.match(/[a-z\s]/i) === null) { // spaces also count!
-            // ensure only alphabet characters work
+        if(event.nativeEvent.key.match(/[a-z\s]/i) === null) { //  ensures only alpha and spaces as input
             return false
         }
         setUserInput(
@@ -77,10 +89,16 @@ function SearchBar(props) {
         }
     }
 
+    function handleMouseUp() {
+        // For when a user intends to delete the current city by highlighting the text and writing new city
+        // name
+        console.log("Lifting the mouse!", window.getSelection().toString())
+    }
+
     useEffect(() => {
         if(matchHistory.length === 0) {
             setLoadDropdown(false)
-            setCityMatches(getCityObjects())
+            props.setCityMatches(getCityObjects())
         }
     }, [userInput])
 
@@ -93,10 +111,11 @@ function SearchBar(props) {
                     name="search-weather-input"
                     autoComplete="off"
                     placeholder="Enter location"
-                    onKeyUp={handleKeyUp} />
+                    onKeyUp={handleKeyUp}
+                    onMouseUp={handleMouseUp} />
                 <button onClick={props.onclick}>Get Forecast</button>
                 {loadDropdown
-                ? <Dropdown cityList={cityMatches} functions={props.functions} />
+                ? <Dropdown cityList={props.cityMatches} functions={props.functions} />
                 : <span></span>
                 }
             </div>
